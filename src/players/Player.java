@@ -1,3 +1,8 @@
+package players;
+
+import cards.Card;
+import game.GameInfo;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,7 +38,7 @@ public class Player {
     private int playerNumber;
 
     /**
-     * Instantiates a new Player using the controller and with number
+     * Instantiates a new players.Player using the controller and with number
      * playerNumber.
      * @param controller the controller for this player.
      * @param playerNumber this player's number.

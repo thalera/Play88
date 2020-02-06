@@ -1,3 +1,5 @@
+package cards;
+
 /**
  * A single card in the game. Represents either treasure with a numeric value
  * or a monster.
@@ -70,7 +72,7 @@ public class Card implements Comparable<Card> {
      */
     @Override
     public String toString() {
-        return "Card{" +
+        return "cards.Card{" +
                 "monster=" + monster +
                 ", value=" + value +
                 ", rank=" + rank +

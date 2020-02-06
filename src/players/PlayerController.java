@@ -1,3 +1,7 @@
+package players;
+
+import game.GameInfo;
+
 /**
  * A controller for players of the game. One controller can handle multiple
  * players by passing in different numbers for the players.

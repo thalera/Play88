@@ -1,7 +1,12 @@
+package players;
+
+import game.GameInfo;
+
 import java.util.Scanner;
 
 /**
- * Interacts with the console to ask what to do.
+ * Interacts with the console to ask what to do. Assumes the player already
+ * has the game information available to them.
  */
 public class HumanController implements PlayerController {
 
@@ -11,7 +16,7 @@ public class HumanController implements PlayerController {
     private Scanner console;
 
     /**
-     * Instantiates a new HumanController using console as input.
+     * Instantiates a new players.HumanController using console as input.
      * @param console the input for the questions.
      */
     public HumanController(Scanner console) {
