@@ -15,7 +15,7 @@ public interface PlayerController {
 
     /**
      * Returns true if the player wants to leave the dungeon.
-     * @return true if the player want to leave the dungeon.
+     * @return true if the player wants to leave the dungeon.
      */
     boolean leaveDungeon();
 
