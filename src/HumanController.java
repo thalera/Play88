@@ -1,8 +1,7 @@
 import java.util.Scanner;
 
 /**
- * Interacts with the console to ask what to do. Assumes the user can see
- * the game information on screen.
+ * Interacts with the console to ask what to do.
  */
 public class HumanController implements PlayerController {
 
@@ -21,10 +20,11 @@ public class HumanController implements PlayerController {
 
     /**
      * Picks whether to draw from the left deck or the right deck.
+     * @param info information about the current state of the game.
      * @return true for left, false for right.
      */
     @Override
-    public boolean pickDeck() {
+    public boolean pickDeck(GameInfo info) {
         String response = "";
         while (!response.startsWith("L") && !response.startsWith("R")) {
             System.out.println("Draw from (L)eft or (R)ight deck? ");
@@ -36,10 +36,11 @@ public class HumanController implements PlayerController {
     /**
      * If both decks have a rank one card on top, this will return true
      * if we want to draw them both.
+     * @param info information about the current state of the game.
      * @return true to draw both.
      */
     @Override
-    public boolean drawBoth() {
+    public boolean drawBoth(GameInfo info) {
         String response = "";
         while (!response.startsWith("Y") && !response.startsWith("N")) {
             System.out.println("Take both cards? (Yes/No): ");
@@ -50,10 +51,11 @@ public class HumanController implements PlayerController {
 
     /**
      * Returns true if the player wants to leave the dungeon.
+     * @param info information about the current state of the game.
      * @return true if the player wants to leave the dungeon.
      */
     @Override
-    public boolean leaveDungeon() {
+    public boolean leaveDungeon(GameInfo info) {
         String response = "";
         while (!response.startsWith("Y") && !response.startsWith("N")) {
             System.out.println("Leave the dungeon? (Yes/No): ");

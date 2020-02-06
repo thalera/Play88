@@ -42,7 +42,7 @@ public class Deck {
         // make monster cards
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 2 + i; j++) {
-                Card card = new Card(i + 1);
+                Card card = new Card(i);
                 deck.add(card);
             }
         }
