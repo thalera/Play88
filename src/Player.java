@@ -32,7 +32,12 @@ public class Player {
      */
     private int playerNumber;
 
-
+    /**
+     * Instantiates a new Player using the controller and with number
+     * playerNumber.
+     * @param controller the controller for this player.
+     * @param playerNumber this player's number.
+     */
     public Player(PlayerController controller, int playerNumber) {
         this.controller = controller;
         this.bank = new TreeSet<>();
@@ -106,7 +111,7 @@ public class Player {
      * @return true for left, false for right.
      */
     boolean pickDeck(GameInfo info) {
-        return controller.pickDeck(info);
+        return controller.pickDeck(info, playerNumber);
     }
 
     /**
@@ -116,7 +121,7 @@ public class Player {
      * @return true to draw both.
      */
     boolean drawBoth(GameInfo info) {
-        return controller.drawBoth(info);
+        return controller.drawBoth(info, playerNumber);
     }
 
     /**
@@ -125,7 +130,7 @@ public class Player {
      * @return true if the player wants to leave the dungeon.
      */
     boolean leaveDungeon(GameInfo info) {
-        return controller.leaveDungeon(info);
+        return controller.leaveDungeon(info, playerNumber);
     }
 
 
