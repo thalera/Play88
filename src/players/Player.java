@@ -12,30 +12,12 @@ import java.util.TreeSet;
  */
 public class Player {
 
-    /**
-     * Cards the player has secured.
-     */
-    private Set<Card> bank;
-
-    /**
-     * Cards the player has not secured.
-     */
-    private TreeSet<Card> bag;
-
-    /**
-     * The player's current score.
-     */
-    private int score;
+    private PlayerInfo info;
 
     /**
      * The controller for this player.
      */
     private PlayerController controller;
-
-    /**
-     * This player's number.
-     */
-    private int playerNumber;
 
     /**
      * Instantiates a new players.Player using the controller and with number
@@ -45,9 +27,7 @@ public class Player {
      */
     public Player(PlayerController controller, int playerNumber) {
         this.controller = controller;
-        this.bank = new TreeSet<>();
-        this.bag = new TreeSet<>();
-        this.playerNumber = playerNumber;
+        info = new PlayerInfo(playerNumber);
     }
 
     /**
@@ -55,14 +35,14 @@ public class Player {
      * @param card the card to add to the bag.
      */
     public void addToBag(Card card) {
-        bag.add(card);
+        info.bag.add(card);
     }
 
     /**
      * Banks the current bag and updates the player's score.
      */
     public void bankBag() {
-        for (Card card : bag) {
+        for (Card card : info.bag) {
             bankCard(card);
         }
     }
@@ -75,9 +55,9 @@ public class Player {
         if (card == null) {
             throw new IllegalArgumentException();
         }
-        bank.add(card);
-        bag.remove(card);
-        score += card.getValue();
+        info.bank.add(card);
+        info.bag.remove(card);
+        info.score += card.getValue();
     }
 
     /**
@@ -85,8 +65,8 @@ public class Player {
      * @return the cards that were in the bag.
      */
     public Collection<Card> loseBag() {
-        Set<Card> bagCopy = new TreeSet<>(bag);
-        bag.clear();
+        Set<Card> bagCopy = new TreeSet<>(info.bag);
+        info.bag.clear();
         return bagCopy;
     }
 
@@ -97,45 +77,45 @@ public class Player {
      *         card.
      */
     public Collection<Card> loseMostOfBag() {
-        Card highest = bag.last();
+        Card highest = info.bag.last();
         bankCard(highest);
         return loseBag();
     }
 
     /**
-     * Returns the total value of the player's bank.
-     * @return the total value of the player's bank.
+     * Returns the information about this player.
+     * @return the information about this player.
      */
-    public int getScore() {
-        return this.score;
+    public PlayerInfo getInfo() {
+        return info;
     }
 
     /**
      * Picks whether to draw from the left deck or the right deck.
-     * @param info information about the current state of the game.
+     * @param gameInfo information about the current state of the game.
      * @return true for left, false for right.
      */
-    boolean pickDeck(GameInfo info) {
-        return controller.pickDeck(info, playerNumber);
+    boolean pickDeck(GameInfo gameInfo) {
+        return controller.pickDeck(gameInfo, info.playerNumber);
     }
 
     /**
      * If both decks have a rank one card on top, this will return true
      * if we want to draw them both.
-     * @param info information about the current state of the game.
+     * @param gameInfo information about the current state of the game.
      * @return true to draw both.
      */
-    boolean drawBoth(GameInfo info) {
-        return controller.drawBoth(info, playerNumber);
+    boolean drawBoth(GameInfo gameInfo) {
+        return controller.drawBoth(gameInfo, info.playerNumber);
     }
 
     /**
      * Returns true if the player wants to leave the dungeon.
-     * @param info information about the current state of the game.
+     * @param gameInfo information about the current state of the game.
      * @return true if the player wants to leave the dungeon.
      */
-    boolean leaveDungeon(GameInfo info) {
-        return controller.leaveDungeon(info, playerNumber);
+    boolean leaveDungeon(GameInfo gameInfo) {
+        return controller.leaveDungeon(gameInfo, info.playerNumber);
     }
 
 

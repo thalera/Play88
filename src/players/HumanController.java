@@ -33,7 +33,7 @@ public class HumanController implements PlayerController {
     public boolean pickDeck(GameInfo info, int playerNumber) {
         String response = "";
         while (!response.startsWith("L") && !response.startsWith("R")) {
-            System.out.println("Draw from (L)eft or (R)ight deck? ");
+            System.out.print("Draw from (L)eft or (R)ight deck? ");
             response = console.nextLine().toUpperCase();
         }
         return response.startsWith("L");
@@ -50,7 +50,7 @@ public class HumanController implements PlayerController {
     public boolean drawBoth(GameInfo info, int playerNumber) {
         String response = "";
         while (!response.startsWith("Y") && !response.startsWith("N")) {
-            System.out.println("Take both cards? (Yes/No): ");
+            System.out.print("Take both cards? (Yes/No): ");
             response = console.nextLine().toUpperCase();
         }
         return response.startsWith("Y");
@@ -66,7 +66,7 @@ public class HumanController implements PlayerController {
     public boolean leaveDungeon(GameInfo info, int playerNumber) {
         String response = "";
         while (!response.startsWith("Y") && !response.startsWith("N")) {
-            System.out.println("Leave the dungeon? (Yes/No): ");
+            System.out.print("Leave the dungeon? (Yes/No): ");
             response = console.nextLine().toUpperCase();
         }
         return response.startsWith("Y");
