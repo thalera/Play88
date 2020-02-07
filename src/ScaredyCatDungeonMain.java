@@ -1,14 +1,13 @@
-package game;
-
-import org.junit.Test;
+import game.GameManager;
 import user_interface.ScaredyTUI;
 import user_interface.ScaredyUI;
 
 import java.util.Scanner;
 
-import static org.junit.Assert.*;
-
-public class GameManagerTest {
+/**
+ * Plays Scaredy Cat Dungeon through the console!
+ */
+public class ScaredyCatDungeonMain {
 
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
