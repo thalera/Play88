@@ -38,7 +38,7 @@ public class GameManager {
     private ScaredyUI userInterface;
 
     /**
-     * Scanner used for input when necessary
+     * Scanner used for input when necessary.
      */
     private Scanner input;
 
