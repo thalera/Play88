@@ -49,23 +49,25 @@ public interface ScaredyUI {
     int getNumComputers();
 
     /**
-     * Displays the gameInfo to the user.
+     * Is called at the start of every turn
      * @param gameInfo the information about the current game.
      */
     void displayGameInfo(GameInfo gameInfo);
 
     /**
-     * Displays the playerInfo to the user.
+     * Is called at the start of a player's turn.
      * @param playerInfo the information about the current player.
+     * @param hidden if the information should be hidden.
      */
-    void displayPlayerInfo(PlayerInfo playerInfo);
+    void displayPlayerInfo(PlayerInfo playerInfo, boolean hidden);
 
     /**
      * Is called when a player draws a card.
+     * @param info the information about the player who drew the card.
      * @param card the monster card that was drawn.
-     * @param human if the player is a human.
+     * @param hidden if the card value should be hidden.
      */
-    void displayDrewCard(Card card, boolean human);
+    void displayDrewCard(PlayerInfo info, Card card, boolean hidden);
 
     /**
      * Is called when player leaves the dungeon.

@@ -102,23 +102,6 @@ public class ScaredyTUI implements ScaredyUI {
     }
 
     /**
-     * Returns the number of type players in the game.
-     * @param type the type of player, to be displayed.
-     * @return the number of players of type.
-     */
-    private int getNumPlayers(String type) {
-        String response = "";
-        Scanner responseScanner = new Scanner(response);
-        while (!responseScanner.hasNextInt()) {
-            System.out.print("How many " + type + " players? ");
-            response = console.nextLine();
-            responseScanner = new Scanner(response);
-        }
-        System.out.println();
-        return responseScanner.nextInt();
-    }
-
-    /**
      * Displays info about the game to the user.
      * @param gameInfo the information about the current game.
      */
@@ -153,6 +136,104 @@ public class ScaredyTUI implements ScaredyUI {
         System.out.println("It is player " + gameInfo.getCurrentPlayer() +
                 "'s turn.");
         enterToContinue();
+    }
+
+    /**
+     * Displays the playerInfo to the user.
+     * @param playerInfo the information about the current player.
+     * @param hidden if the information should be hidden
+     */
+    @Override
+    public void displayPlayerInfo(PlayerInfo playerInfo, boolean hidden) {
+        System.out.println("Player " + playerInfo.getPlayerNumber() +":");
+        if (!hidden) {
+            int bagScore = 0;
+            for (Card card : playerInfo.getBag()) {
+                bagScore += card.getValue();
+            }
+            System.out.println("    Bag (" + bagScore + "):");
+            printTreasureCards(playerInfo.getBag());
+            System.out.println("    Bank (" + playerInfo.getScore() + "):");
+            printTreasureCards(playerInfo.getBank());
+            System.out.println("    Score: " + (playerInfo.getScore() + bagScore));
+            System.out.println();
+        } else {
+            int[] bagScore = getMinMaxScore(playerInfo.getBag());
+            int[] bankScore = getMinMaxScore(playerInfo.getBank());
+            System.out.println("    Bag (" + bagScore[0] + " to " + bagScore[1] + "):");
+            printCardsHidden(playerInfo.getBag());
+            System.out.println("    Bank (" + bankScore[0] + " to " + bankScore[1] + "):");
+            printCardsHidden(playerInfo.getBank());
+            System.out.println("    Score: " + (bagScore[0] + bankScore[0]) +
+                    " to " + (bagScore[1] + bankScore[1]));
+            System.out.println();
+            enterToContinue();
+        }
+    }
+
+    /**
+     * Prints out a message saying the player drew a card.
+     * @param card the card that was drawn.
+     * @param hidden if the card value should be hidden.
+     */
+    @Override
+    public void displayDrewCard(PlayerInfo info, Card card, boolean hidden) {
+        if (hidden) {
+            displayHumanDrewCard(card);
+        } else {
+            displayComputerDrewCard(card);
+        }
+    }
+
+    /**
+     * Prints a message saying the player left the dungeon.
+     * @param player the player who left.
+     */
+    @Override
+    public void displayLeftDungeon(PlayerInfo player) {
+        System.out.println("Player " + player.getPlayerNumber() +
+                " left the dungeon!");
+        enterToContinue();
+    }
+
+    /**
+     * Prints a message saying the journey is over.
+     */
+    @Override
+    public void displayEndJourney() {
+        System.out.println("This journey has ended!");
+        enterToContinue();
+    }
+
+    /**
+     * Prints a message saying that the players won.
+     * @param players the information about the players who won.
+     */
+    @Override
+    public void displayWinners(List<PlayerInfo> players) {
+        if (players.size() > 1) {
+            System.out.print("The winners are: ");
+        } else {
+            System.out.print("The winner is: ");
+        }
+        for (int i = 0; i < players.size () - 1; i++) {
+            PlayerInfo player = players.get(i);
+            System.out.print("P" + player.getPlayerNumber() +
+                    " (" + player.getScore() + "), ");
+        }
+        PlayerInfo player = players.get(players.size() - 1);
+        System.out.println("P" + player.getPlayerNumber() +
+                " (" + player.getScore() + ")!");
+        enterToContinue();
+    }
+
+    /**
+     * Prints a message and waits until the user hits enter before continuing.
+     */
+    private void enterToContinue() {
+        System.out.print("(Hit enter to continue) ");
+        console.nextLine();
+        System.out.println();
     }
 
     /**
@@ -317,50 +398,6 @@ public class ScaredyTUI implements ScaredyUI {
     }
 
     /**
-     * Displays the playerInfo to the user.
-     * @param playerInfo the information about the current player.
-     */
-    @Override
-    public void displayPlayerInfo(PlayerInfo playerInfo) {
-        System.out.println("Player " + playerInfo.getPlayerNumber() +":");
-        int bagScore = 0;
-        for (Card card : playerInfo.getBag()) {
-            bagScore += card.getValue();
-        }
-        System.out.println("    Bag (" + bagScore + "):");
-        printTreasureCards(playerInfo.getBag());
-        System.out.println("    Bank (" + playerInfo.getScore() + "):");
-        printTreasureCards(playerInfo.getBank());
-        System.out.println("    Score: " + (playerInfo.getScore() + bagScore));
-        System.out.println();
-    }
-
-    /**
-     * Prints out a message saying the player drew a card.
-     * @param card the card that was drawn.
-     * @param human if the player is a human.
-     */
-    @Override
-    public void displayDrewCard(Card card, boolean human) {
-        if (human) {
-            displayHumanDrewCard(card);
-        } else {
-            displayComputerDrewCard(card);
-        }
-    }
-
-    /**
-     * Prints a message saying the player left the dungeon.
-     * @param player the player who left.
-     */
-    @Override
-    public void displayLeftDungeon(PlayerInfo player) {
-        System.out.println("Player " + player.getPlayerNumber() +
-                " left the dungeon!");
-        enterToContinue();
-    }
-
-    /**
      * Prints a message saying computer drew a card.
      * @param card the card that was drawn.
      */
@@ -408,42 +445,44 @@ public class ScaredyTUI implements ScaredyUI {
     }
 
     /**
-     * Prints a message saying the journey is over.
+     * Returns the number of type players in the game.
+     * @param type the type of player, to be displayed.
+     * @return the number of players of type.
      */
-    @Override
-    public void displayEndJourney() {
-        System.out.println("This journey has ended!");
-        enterToContinue();
-    }
-
-    /**
-     * Prints a message saying that the players won.
-     * @param players the information about the players who won.
-     */
-    @Override
-    public void displayWinners(List<PlayerInfo> players) {
-        if (players.size() > 1) {
-            System.out.print("The winners are: ");
-        } else {
-            System.out.print("The winner is: ");
+    private int getNumPlayers(String type) {
+        String response = "";
+        Scanner responseScanner = new Scanner(response);
+        while (!responseScanner.hasNextInt()) {
+            System.out.print("How many " + type + " players? ");
+            response = console.nextLine();
+            responseScanner = new Scanner(response);
         }
-        for (int i = 0; i < players.size () - 1; i++) {
-            PlayerInfo player = players.get(i);
-            System.out.print("P" + player.getPlayerNumber() +
-                    " (" + player.getScore() + "), ");
-        }
-        PlayerInfo player = players.get(players.size() - 1);
-        System.out.println("P" + player.getPlayerNumber() +
-                " (" + player.getScore() + ")!");
-        enterToContinue();
-    }
-
-    /**
-     * Prints a message and waits until the user hits enter before continuing.
-     */
-    private void enterToContinue() {
-        System.out.print("(Hit enter to continue) ");
-        console.nextLine();
         System.out.println();
+        return responseScanner.nextInt();
     }
+
+    /**
+     * Returns an array [min, max] of the possible scores of cards with the
+     * ranks of the cards in cards.
+     * @param cards the cards to judge min, max of.
+     * @return an array with the [min, max] scores.
+     */
+    private int[] getMinMaxScore(List<Card> cards) {
+        int[] minMax = new int[2];
+        for (Card card : cards) {
+            int rank = card.getRank();
+            if (rank == 0) {
+                minMax[0] += 1;
+                minMax[1] += 3;
+            } else if (rank == 1) {
+                minMax[0] += 3;
+                minMax[1] += 5;
+            } else {
+                minMax[0] += 5;
+                minMax[1] += 7;
+            }
+        }
+        return minMax;
+    }
+
 }

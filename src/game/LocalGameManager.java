@@ -212,9 +212,8 @@ public class LocalGameManager implements GameManager {
      * @param player the player whose turn it is.
      */
     private void takeTurn(Player player) {
-        if (player.getInfo().isHuman()) { // computers dont need to see info
-            userInterface.displayPlayerInfo(player.getInfo());
-        }
+        userInterface.displayPlayerInfo(player.getInfo(),
+                !player.getInfo().isHuman());
         if (player.leaveDungeon(gameInfo)) {
             player.bankBag();
             playersInDungeon.remove(player);
@@ -245,14 +244,15 @@ public class LocalGameManager implements GameManager {
      */
     public boolean drawCard(Deck deck, Player player) {
         Card card = deck.draw();
+        PlayerInfo info = player.getInfo();
         if (card.isMonster()) {
             gameInfo.monstersThisJourney++;
             gameInfo.monsterRanks[card.getRank()]++;
-            userInterface.displayDrewCard(card, player.getInfo().isHuman());
+            userInterface.displayDrewCard(info, card, player.getInfo().isHuman());
             return true;
         } else {
             player.addToBag(card);
-            userInterface.displayDrewCard(card, player.getInfo().isHuman());
+            userInterface.displayDrewCard(info, card, player.getInfo().isHuman());
             return false;
         }
     }
