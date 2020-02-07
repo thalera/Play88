@@ -8,7 +8,7 @@ import java.util.Scanner;
  * Interacts with the console to ask what to do. Assumes the player already
  * has the game information available to them.
  */
-public class HumanController implements PlayerController {
+public class ConsoleController implements PlayerController {
 
     /**
      * Scanner to interact with the user.
@@ -19,7 +19,7 @@ public class HumanController implements PlayerController {
      * Instantiates a new players.HumanController using console as input.
      * @param console the input for the questions.
      */
-    public HumanController(Scanner console) {
+    public ConsoleController(Scanner console) {
         this.console = console;
     }
 

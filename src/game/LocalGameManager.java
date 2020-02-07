@@ -107,7 +107,7 @@ public class LocalGameManager implements GameManager {
     private void setUpGameInfo() {
         int numHumans = userInterface.getNumHumans();
         int numComputers = userInterface.getNumComputers();
-        PlayerController humanController = new HumanController(input);
+        PlayerController humanController = new ConsoleController(input);
         PlayerController simpleController = new SimpleComputerController();
         for (int i = 0; i < numHumans; i++) {
             Player player = new Player(humanController, i, true);
