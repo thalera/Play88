@@ -61,6 +61,7 @@ public class GameManager {
      * Initializes a new GameManager using the userInterface to
      * interact with the user.
      * @param userInterface the interface to interact with the user.
+     * @param input Scanner used for input if a PlayerController requires it.
      */
     public GameManager(ScaredyUI userInterface, Scanner input) {
         this.playersInDungeon = new ArrayList<>();
