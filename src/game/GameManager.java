@@ -151,8 +151,7 @@ public class GameManager {
     private void printResults() {
         List<PlayerInfo> winners = new ArrayList<>();
         int hi = 0;
-        for (int i = 0; i < playersInDungeon.size(); i++) {
-            Player player = playersInDungeon.get(i);
+        for (Player player : playersInDungeon) {
             int score = player.getInfo().getScore();
             if (score > hi) {
                 hi = score;
@@ -164,7 +163,6 @@ public class GameManager {
         }
         userInterface.displayWinners(winners);
     }
-
 
     /**
      * Performs one round of the game. Assumes card in left deck but not right.

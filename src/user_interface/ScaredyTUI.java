@@ -250,7 +250,6 @@ public class ScaredyTUI implements ScaredyUI {
         }
     }
 
-
     /**
      * Print out a cute little picture of the monster cards.
      * @param cards the monster cards to print.
