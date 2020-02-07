@@ -128,8 +128,15 @@ public class ScaredyTUI implements ScaredyUI {
         System.out.println();
         System.out.println("Journey: " + gameInfo.getJourney() + ", " +
                 "Monsters Encountered: " + gameInfo.getMonstersThisJourney());
-        System.out.println("Monsters Encountered Overall: " +
-                getRanksString(gameInfo.getMonsterRanks()));
+        System.out.println("Monsters Encountered Overall: ");
+        int[] monsterRanks = gameInfo.getMonsterRanks();
+        List<Card> monsters = new ArrayList<>();
+        for (int i = 0; i < monsterRanks.length; i++) {
+            for (int j = 0; j < monsterRanks[i]; j++) {
+                monsters.add(new Card(i));
+            }
+        }
+        printMonsterCards(monsters);
         System.out.println();
         for (int i = 0; i < gameInfo.getNumPlayers(); i++) {
             System.out.println("P" + i + " Bag: " +
@@ -138,67 +145,14 @@ public class ScaredyTUI implements ScaredyUI {
         }
         System.out.println();
         System.out.println("Cards remaining: " + gameInfo.getCardsLeft());
-        System.out.println();
-        printDecks(gameInfo.getLeftRank(), gameInfo.getRightRank());
+        List<Card> deckCards = new ArrayList<>();
+        deckCards.add(new Card(gameInfo.getLeftRank()));
+        deckCards.add(new Card(gameInfo.getRightRank()));
+        printCardsHidden(deckCards);
         System.out.println();
         System.out.println("It is player " + gameInfo.getCurrentPlayer() +
                 "'s turn.");
         enterToContinue();
-    }
-
-    /**
-     * Prints a cute little picture of the decks.
-     * @param leftRank the rank of the left card.
-     * @param rightRank the rank of the right card.
-     */
-    private void printDecks(int leftRank, int rightRank) {
-        // I realize this is a mess but idk how to fix it
-        char leftTop = leftRank > 0 ? '*' : ' ';
-        char leftMid = leftRank > 1 ? '*' : ' ';
-        char rightTop = rightRank > 0 ? '*' : ' ';
-        char rightMid = rightRank > 1 ? '*' : ' ';
-        boolean leftAvailable = leftRank >= 0;
-        boolean rightAvailable = rightRank >= 0;
-        if (leftAvailable) {
-            System.out.print(" _____    ");
-        } else {
-            System.out.print("          ");
-        }
-        if (rightAvailable) {
-            System.out.println(" _____");
-        } else {
-            System.out.println();
-        }
-        if (leftAvailable) {
-            System.out.print("|  " + leftTop + "  |   ");
-        } else {
-            System.out.print("          ");
-        }
-        if (rightAvailable) {
-            System.out.println("|  " + rightTop + "  |   ");
-        } else {
-            System.out.println();
-        }
-        if (leftAvailable) {
-            System.out.print("|  " + leftMid + "  |   ");
-        } else {
-            System.out.print("          ");
-        }
-        if (rightAvailable) {
-            System.out.println("|  " + rightMid + "  |   ");
-        } else {
-            System.out.println();
-        }
-        if (leftAvailable) {
-            System.out.print("|_____|   ");
-        } else {
-            System.out.print("          ");
-        }
-        if (rightAvailable) {
-            System.out.println("|_____|");
-        } else {
-            System.out.println();
-        }
     }
 
     /**
@@ -209,7 +163,7 @@ public class ScaredyTUI implements ScaredyUI {
         List<Card> cards = new ArrayList<>();
         cards.add(card);
         if (card.isMonster()) {
-            printMonster(card);
+            printMonsterCards(cards);
         } else {
             printTreasureCards(cards);
         }
@@ -248,6 +202,45 @@ public class ScaredyTUI implements ScaredyUI {
     }
 
     /**
+     * Prints out a cute picture of the cards face down.
+     * @param cards the cards to print.
+     */
+    private void printCardsHidden(List<Card> cards) {
+        int indentation = 5;
+        // tops
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print(" _____   ");
+        }
+        System.out.println();
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("|  ");
+            if (card.getRank() > 0) {
+                System.out.print("*  |  ");
+            } else {
+                System.out.print("   |  ");
+            }
+        }
+        System.out.println();
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("|  ");
+            if (card.getRank() > 1) {
+                System.out.print("*  |  ");
+            } else {
+                System.out.print("   |  ");
+            }
+        }
+        System.out.println();
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("|_____|  ");
+        }
+        System.out.println();
+    }
+
+    /**
      * Prints out num spaces without moving to the next line.
      * @param num the number of spaces to print.
      */
@@ -257,28 +250,33 @@ public class ScaredyTUI implements ScaredyUI {
         }
     }
 
-    /**
-     * Prints out a cute little picture of the card back.
-     * @param card the card to print.
-     */
-    private void printCardBack(Card card) {
-        char top = card.getRank() > 0 ? '*' : ' ';
-        char mid = card.getRank() > 1 ? '*' : ' ';
-        System.out.println(" _____");
-        System.out.println("|  " + top + "  |");
-        System.out.println("|  " + mid + "  |");
-        System.out.println("|_____|");
-    }
 
     /**
-     * Print out a cute little picture of a monster card.
-     * @param card the monster card to print.
+     * Print out a cute little picture of the monster cards.
+     * @param cards the monster cards to print.
      */
-    private void printMonster(Card card) {
-        System.out.println(" _____");
-        System.out.println(getTopCardString(card));
-        System.out.println("| >:( |");
-        System.out.println("|_____|");
+    private void printMonsterCards(List<Card> cards) {
+        int indentation = 5;
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print(" _____   ");
+        }
+        System.out.println();
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print(getTopCardString(card) + "  ");
+        }
+        System.out.println();
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("| >:( |  ");
+        }
+        System.out.println();
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("|_____|  ");
+        }
+        System.out.println();
     }
 
     /**
@@ -363,7 +361,9 @@ public class ScaredyTUI implements ScaredyUI {
         if (card.isMonster()) {
             displayMonsterMessage("Computer", card);
         } else {
-            printCardBack(card);
+            List<Card> cards = new ArrayList<>();
+            cards.add(card);
+            printCardsHidden(cards);
             System.out.println();
             System.out.println("Computer drew a Rank " + card.getRank() +
                     " treasure!");
@@ -392,7 +392,9 @@ public class ScaredyTUI implements ScaredyUI {
      * @param card the monster card that was drawn.
      */
     private void displayMonsterMessage(String player, Card card) {
-        printMonster(card);
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
+        printMonsterCards(cards);
         System.out.println();
         System.out.println(player + " drew a Rank " + card.getRank() +
                 " monster!");
