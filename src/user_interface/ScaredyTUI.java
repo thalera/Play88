@@ -122,9 +122,18 @@ public class ScaredyTUI implements ScaredyUI {
         printMonsterCards(monsters);
         System.out.println();
         for (int i = 0; i < gameInfo.getNumPlayers(); i++) {
+            int[] bagRanks = gameInfo.getBagRanks(i);
+            int[] bankRanks = gameInfo.getBankRanks(i);
+            int[] totalRanks = new int[3];
+            for (int j = 0; j < totalRanks.length; j++) {
+                totalRanks[j] = bankRanks[j] + bagRanks[j];
+            }
+            int min = totalRanks[0] + totalRanks[1] * 3 + totalRanks[2] * 5;
+            int max = totalRanks[0] * 3 + totalRanks[1] * 5 + totalRanks[2] * 7;
             System.out.println("P" + i + " Bag: " +
-                getRanksString(gameInfo.getBagRanks(i)) + ", " +
-                "Bank: " + getRanksString(gameInfo.getBankRanks(i)));
+                getRanksString(bagRanks) + ", " +
+                "Bank: " + getRanksString(bankRanks) +
+                    ", Score: (" + min + " to " + max + ")");
         }
         System.out.println();
         System.out.println("Cards remaining: " + gameInfo.getCardsLeft());
