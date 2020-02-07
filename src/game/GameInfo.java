@@ -46,6 +46,16 @@ public class GameInfo {
     protected int[][] bagRanks;
 
     /**
+     * The number of monsters encountered of each rank.
+     */
+    protected int[] monsterRanks;
+
+    /**
+     * The number of monsters encountered this journey.
+     */
+    protected int monstersThisJourney;
+
+    /**
      * Number of players in the game.
      */
     private int numPlayers;
@@ -58,6 +68,7 @@ public class GameInfo {
         bankRanks = new int[numPlayers][];
         bagRanks = new int[numPlayers][];
         this.numPlayers = numPlayers;
+        this.monsterRanks = new int[3];
     }
 
     /**
@@ -127,4 +138,23 @@ public class GameInfo {
     public int getNumPlayers() {
         return numPlayers;
     }
+
+    /**
+     * Returns the number of monsters encountered this journey.
+     * @return the number of monsters encountered this journey.
+     */
+    public int getMonstersThisJourney() {
+        return monstersThisJourney;
+    }
+
+    /**
+     * Returns an array of the ranks of monsters encountered this game, such
+     * that [i] is the number of monsters of rank i.
+     * @return an array containing the ranks of monsters encountered this game.
+     */
+    public int[] getMonsterRanks() {
+        return Arrays.copyOf(monsterRanks, monsterRanks.length);
+    }
+
+
 }

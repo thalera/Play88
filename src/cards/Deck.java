@@ -34,7 +34,7 @@ public class Deck {
         int modifier = -1;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 3; j++) {
-                Card card = new Card(i - modifier, i % 3);
+                Card card = new Card(i - modifier, i / 3);
                 deck.add(card);
             }
             if (i == 2 || i == 6) {
@@ -70,7 +70,7 @@ public class Deck {
         while (!this.isEmpty()) {
             cards.add(deck.remove());
         }
-        while (!this.isEmpty()) {
+        while (!cards.isEmpty()) {
             int index = rand.nextInt(cards.size());
             deck.add(cards.remove(index));
         }

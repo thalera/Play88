@@ -1,7 +1,10 @@
 package user_interface;
 
+import cards.Card;
 import game.GameInfo;
 import players.PlayerInfo;
+
+import java.util.List;
 
 /**
  * An interface is used for user interaction when outside of the game,
@@ -56,5 +59,28 @@ public interface ScaredyUI {
      * @param playerInfo the information about the current player.
      */
     void displayPlayerInfo(PlayerInfo playerInfo);
+
+    /**
+     * Is called when a player draws a monster.
+     * @param card the monster card that was drawn.
+     */
+    void displayDrewMonster(Card card);
+
+    /**
+     * Is called when a player draws a treasure.
+     * @param card the treasure card that was drawn.
+     */
+    void displayDrewTreasure(Card card);
+
+    /**
+     * Is called when the journey ends.
+     */
+    void displayEndJourney();
+
+    /**
+     * Is called when the game is over
+     * @param players the information about the players who won.
+     */
+    void displayWinners(List<PlayerInfo> players);
 
 }

@@ -10,7 +10,7 @@ import java.util.TreeSet;
 /**
  * Stores information about a player in the game.
  */
-public class Player {
+public class Player implements Comparable<Player> {
 
     private PlayerInfo info;
 
@@ -24,10 +24,11 @@ public class Player {
      * playerNumber.
      * @param controller the controller for this player.
      * @param playerNumber this player's number.
+     * @param human true if this player is a human.
      */
-    public Player(PlayerController controller, int playerNumber) {
+    public Player(PlayerController controller, int playerNumber, boolean human) {
         this.controller = controller;
-        info = new PlayerInfo(playerNumber);
+        info = new PlayerInfo(playerNumber, human);
     }
 
     /**
@@ -45,6 +46,7 @@ public class Player {
         for (Card card : info.bag) {
             bankCard(card);
         }
+        info.bag.clear();
     }
 
     /**
@@ -56,7 +58,6 @@ public class Player {
             throw new IllegalArgumentException();
         }
         info.bank.add(card);
-        info.bag.remove(card);
         info.score += card.getValue();
     }
 
@@ -95,7 +96,7 @@ public class Player {
      * @param gameInfo information about the current state of the game.
      * @return true for left, false for right.
      */
-    boolean pickDeck(GameInfo gameInfo) {
+    public boolean pickDeck(GameInfo gameInfo) {
         return controller.pickDeck(gameInfo, info.playerNumber);
     }
 
@@ -105,7 +106,7 @@ public class Player {
      * @param gameInfo information about the current state of the game.
      * @return true to draw both.
      */
-    boolean drawBoth(GameInfo gameInfo) {
+    public boolean drawBoth(GameInfo gameInfo) {
         return controller.drawBoth(gameInfo, info.playerNumber);
     }
 
@@ -114,10 +115,17 @@ public class Player {
      * @param gameInfo information about the current state of the game.
      * @return true if the player wants to leave the dungeon.
      */
-    boolean leaveDungeon(GameInfo gameInfo) {
+    public boolean leaveDungeon(GameInfo gameInfo) {
         return controller.leaveDungeon(gameInfo, info.playerNumber);
     }
 
-
+    /**
+     * Compares this to other based on player number.
+     * @param other the other player.
+     * @return positive if greater, 0 if equal, negative if less.
+     */
+    public int compareTo(Player other) {
+        return this.info.playerNumber - other.info.playerNumber;
+    }
 
 }

@@ -36,6 +36,7 @@ public class HumanController implements PlayerController {
             System.out.print("Draw from (L)eft or (R)ight deck? ");
             response = console.nextLine().toUpperCase();
         }
+        System.out.println();
         return response.startsWith("L");
     }
 
@@ -53,6 +54,7 @@ public class HumanController implements PlayerController {
             System.out.print("Take both cards? (Yes/No): ");
             response = console.nextLine().toUpperCase();
         }
+        System.out.println();
         return response.startsWith("Y");
     }
 
@@ -69,6 +71,7 @@ public class HumanController implements PlayerController {
             System.out.print("Leave the dungeon? (Yes/No): ");
             response = console.nextLine().toUpperCase();
         }
+        System.out.println();
         return response.startsWith("Y");
     }
 }

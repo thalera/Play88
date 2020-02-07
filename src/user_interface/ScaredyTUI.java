@@ -1,8 +1,11 @@
 package user_interface;
 
+import cards.Card;
 import game.GameInfo;
 import players.PlayerInfo;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ScaredyTUI implements ScaredyUI {
@@ -27,6 +30,7 @@ public class ScaredyTUI implements ScaredyUI {
     @Override
     public void displayIntro() {
         System.out.println("Welcome to Scaredy Cat Dungeon!");
+        System.out.println();
     }
 
     /**
@@ -41,6 +45,7 @@ public class ScaredyTUI implements ScaredyUI {
         }
         playNextGame = response.startsWith("P");
         quit = response.startsWith("Q");
+        System.out.println();
     }
 
     /**
@@ -49,7 +54,11 @@ public class ScaredyTUI implements ScaredyUI {
      */
     @Override
     public boolean playGame() {
-        return playNextGame;
+        if (playNextGame) {
+            playNextGame = false;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -92,6 +101,7 @@ public class ScaredyTUI implements ScaredyUI {
             response = console.nextLine();
             responseScanner = new Scanner(response);
         }
+        System.out.println();
         return responseScanner.nextInt();
     }
 
@@ -101,14 +111,20 @@ public class ScaredyTUI implements ScaredyUI {
      */
     @Override
     public void displayGameInfo(GameInfo gameInfo) {
-        System.out.println("Journey: " + gameInfo.getJourney());
+        System.out.println("Journey: " + gameInfo.getJourney() + ", " +
+                "Monsters Encountered: " + gameInfo.getMonstersThisJourney());
+        System.out.println("Monsters Encountered overall: " +
+                getRanksString(gameInfo.getMonsterRanks()));
+        System.out.println();
         System.out.println("Left deck: " + gameInfo.getLeftRank() + ", " +
              "Right deck: " + gameInfo.getRightRank());
+        System.out.println();
         for (int i = 0; i < gameInfo.getNumPlayers(); i++) {
             System.out.println("P" + i + " Bag: " +
                 getRanksString(gameInfo.getBagRanks(i)) + ", " +
                 "Bank: " + getRanksString(gameInfo.getBankRanks(i)));
         }
+        enterToContinue();
     }
 
     /**
@@ -120,9 +136,9 @@ public class ScaredyTUI implements ScaredyUI {
     private String getRanksString(int[] ranks) {
         String res = "[";
         for (int i = 0; i < ranks.length - 1; i++) {
-            res += "Rank " + i + ": " + ranks[i] + ", ";
+            res += "R" + i + ": " + ranks[i] + ", ";
         }
-        res += "Rank " + ranks.length + ": " + ranks[ranks.length - 1] + "]";
+        res += "R" + (ranks.length - 1) + ": " + ranks[ranks.length - 1] + "]";
         return res;
     }
 
@@ -132,6 +148,65 @@ public class ScaredyTUI implements ScaredyUI {
      */
     @Override
     public void displayPlayerInfo(PlayerInfo playerInfo) {
+        System.out.println("Player " + playerInfo.getPlayerNumber() +":");
+        System.out.println("    Bag:  " + playerInfo.getBag().toString());
+        System.out.println("    Bank: " + playerInfo.getBank().toString());
+        System.out.println();
+    }
 
+    /**
+     * Prints a message saying you drew a monster.
+     * @param card the monster card that was drawn.
+     */
+    @Override
+    public void displayDrewMonster(Card card) {
+        System.out.println("You drew a monster!");
+        enterToContinue();
+    }
+
+    /**
+     * Prints a message saying you drew treasure.
+     * @param card the treasure card that was drawn.
+     */
+    @Override
+    public void displayDrewTreasure(Card card) {
+        System.out.println("You drew a treasure card!");
+        System.out.println(card);
+        enterToContinue();
+    }
+
+    /**
+     * Prints a message saying the journey is over.
+     */
+    @Override
+    public void displayEndJourney() {
+        System.out.println("This journey has ended!");
+        enterToContinue();
+    }
+
+    /**
+     * Prints a message saying that the players won.
+     * @param players the information about the players who won.
+     */
+    @Override
+    public void displayWinners(List<PlayerInfo> players) {
+        if (players.size() > 1) {
+            System.out.print("The winners are: ");
+        } else {
+            System.out.print("The winner is: ");
+        }
+        for (int i = 0; i < players.size () - 1; i++) {
+            PlayerInfo player = players.get(i);
+            System.out.print("P" + player.getPlayerNumber() + ", ");
+        }
+        System.out.println("P" + players.get(players.size() - 1).
+                getPlayerNumber() + "!");
+        enterToContinue();
+    }
+
+    private void enterToContinue() {
+        System.out.print("(Hit enter to continue) ");
+        console.nextLine();
+        System.out.println();
     }
 }

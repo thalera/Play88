@@ -72,11 +72,7 @@ public class Card implements Comparable<Card> {
      */
     @Override
     public String toString() {
-        return "cards.Card{" +
-                "monster=" + monster +
-                ", value=" + value +
-                ", rank=" + rank +
-                '}';
+        return "(V" + value + ", R" + rank + ")";
     }
 
     /**
