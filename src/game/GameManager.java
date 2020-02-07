@@ -2,20 +2,25 @@ package game;
 
 import cards.Card;
 import cards.Deck;
-import players.HumanController;
-import players.Player;
-import players.PlayerController;
-import players.PlayerInfo;
+import players.*;
 import user_interface.ScaredyUI;
 
 import java.util.*;
 
+/**
+ * Manages and runs multiple games of Scaredy Cat Dungeon.
+ */
 public class GameManager {
 
     /**
      * Info about the current game.
      */
     private GameInfo gameInfo;
+
+    /**
+     * Map from player numbers to players
+     */
+    private Map<Integer, Player> numbersToPlayers;
 
     /**
      * Players in the dungeon
@@ -63,6 +68,7 @@ public class GameManager {
         this.userInterface = userInterface;
         this.input = input;
         this.rand = new Random();
+        this.numbersToPlayers = new HashMap<>();
     }
 
     /**
@@ -99,12 +105,16 @@ public class GameManager {
         int numHumans = userInterface.getNumHumans();
         int numComputers = userInterface.getNumComputers();
         PlayerController humanController = new HumanController(input);
+        PlayerController simpleController = new SimpleComputerController();
         for (int i = 0; i < numHumans; i++) {
             Player player = new Player(humanController, i, true);
+            numbersToPlayers.put(i, player);
             playersInDungeon.add(player);
         }
         for (int i = 0; i < numComputers; i++) {
-            // TODO: add computer controller
+            Player player = new Player(simpleController, i + numHumans, false);
+            numbersToPlayers.put(i + numHumans, player);
+            playersInDungeon.add(player);
         }
         this.gameInfo = new GameInfo(numComputers + numHumans);
     }
@@ -170,16 +180,23 @@ public class GameManager {
             if (firstPlayer) {
                 firstPlayer = false;
             } else {
-                currentPlayer = (currentPlayer + 1) % playersInDungeon.size();
+                do {
+                    currentPlayer = (currentPlayer + 1) %
+                            numbersToPlayers.size();
+                    gameInfo.currentPlayer = currentPlayer;
+                } while (!playersInDungeon.contains(
+                        numbersToPlayers.get(currentPlayer)));
             }
             userInterface.displayGameInfo(gameInfo);
-            takeTurn(playersInDungeon.get(currentPlayer));
+            takeTurn(numbersToPlayers.get(currentPlayer));
             writeDeckInfo();
             writePlayerInfo();
         }
         if (gameInfo.monstersThisJourney == 3) {
-            leftDeck.addCards(playersInDungeon.get(currentPlayer).loseBag());
-            playersWhoLeft.add(playersInDungeon.remove(currentPlayer));
+            Player lastPlayer = numbersToPlayers.get(currentPlayer);
+            leftDeck.addCards(lastPlayer.loseBag());
+            playersInDungeon.remove(lastPlayer);
+            playersWhoLeft.add(lastPlayer);
             for (Player player : playersInDungeon) {
                 leftDeck.addCards(player.loseMostOfBag());
             }
@@ -201,6 +218,7 @@ public class GameManager {
             player.bankBag();
             playersInDungeon.remove(player);
             playersWhoLeft.add(player);
+            userInterface.displayLeftDungeon(player.getInfo());
         } else if (gameInfo.leftRank == 0 && gameInfo.rightRank == 0 &&
                     player.drawBoth(gameInfo)) {
             if (player.pickDeck(gameInfo)) {
@@ -229,11 +247,11 @@ public class GameManager {
         if (card.isMonster()) {
             gameInfo.monstersThisJourney++;
             gameInfo.monsterRanks[card.getRank()]++;
-            userInterface.displayDrewMonster(card);
+            userInterface.displayDrewCard(card, player.getInfo().isHuman());
             return true;
         } else {
             player.addToBag(card);
-            userInterface.displayDrewTreasure(card);
+            userInterface.displayDrewCard(card, player.getInfo().isHuman());
             return false;
         }
     }
@@ -289,7 +307,7 @@ public class GameManager {
      * @param cards the cards to count the ranks of.
      * @return an array containing counts of each rank of card.
      */
-    private int[] getRanksArray(Set<Card> cards) {
+    private int[] getRanksArray(List<Card> cards) {
         int numRanks = 3;
         int[] ranks = new int[numRanks];
         for (Card card : cards) {

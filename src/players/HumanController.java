@@ -26,11 +26,11 @@ public class HumanController implements PlayerController {
     /**
      * Picks whether to draw from the left deck or the right deck.
      * @param info information about the current state of the game.
-     * @param playerNumber the number of the player whose decision this is.
+     * @param playerInfo the information about the current player.
      * @return true for left, false for right.
      */
     @Override
-    public boolean pickDeck(GameInfo info, int playerNumber) {
+    public boolean pickDeck(GameInfo info, PlayerInfo playerInfo) {
         String response = "";
         while (!response.startsWith("L") && !response.startsWith("R")) {
             System.out.print("Draw from (L)eft or (R)ight deck? ");
@@ -44,11 +44,11 @@ public class HumanController implements PlayerController {
      * If both decks have a rank one card on top, this will return true
      * if we want to draw them both.
      * @param info information about the current state of the game.
-     * @param playerNumber the number of the player whose decision this is.
+     * @param playerInfo the information about the current player.
      * @return true to draw both.
      */
     @Override
-    public boolean drawBoth(GameInfo info, int playerNumber) {
+    public boolean drawBoth(GameInfo info, PlayerInfo playerInfo) {
         String response = "";
         while (!response.startsWith("Y") && !response.startsWith("N")) {
             System.out.print("Take both cards? (Yes/No): ");
@@ -61,11 +61,11 @@ public class HumanController implements PlayerController {
     /**
      * Returns true if the player wants to leave the dungeon.
      * @param info information about the current state of the game.
-     * @param playerNumber the number of the player whose decision this is.
+     * @param playerInfo the information about the current player.
      * @return true if the player wants to leave the dungeon.
      */
     @Override
-    public boolean leaveDungeon(GameInfo info, int playerNumber) {
+    public boolean leaveDungeon(GameInfo info, PlayerInfo playerInfo) {
         String response = "";
         while (!response.startsWith("Y") && !response.startsWith("N")) {
             System.out.print("Leave the dungeon? (Yes/No): ");

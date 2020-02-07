@@ -137,13 +137,12 @@ public class Deck {
     }
 
     /**
-     * Returns the rank of the top card on the deck.
-     * @return the rank of the top card on the deck.
-     * @throws IllegalArgumentException if the deck is empty.
+     * Returns the rank of the top card on the deck or -1 if its empty
+     * @return the rank of the top card on the deck or -1 if its empty.
      */
     public int peekRank() {
         if (deck.size() == 0 || deck.peek() == null) {
-            throw new IllegalStateException();
+            return -1;
         }
         return deck.peek().getRank();
     }

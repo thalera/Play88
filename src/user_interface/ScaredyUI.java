@@ -61,16 +61,17 @@ public interface ScaredyUI {
     void displayPlayerInfo(PlayerInfo playerInfo);
 
     /**
-     * Is called when a player draws a monster.
+     * Is called when a player draws a card.
      * @param card the monster card that was drawn.
+     * @param human if the player is a human.
      */
-    void displayDrewMonster(Card card);
+    void displayDrewCard(Card card, boolean human);
 
     /**
-     * Is called when a player draws a treasure.
-     * @param card the treasure card that was drawn.
+     * Is called when player leaves the dungeon.
+     * @param player the player who left.
      */
-    void displayDrewTreasure(Card card);
+    void displayLeftDungeon(PlayerInfo player);
 
     /**
      * Is called when the journey ends.

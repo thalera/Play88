@@ -4,6 +4,7 @@ import cards.Card;
 import game.GameInfo;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -37,6 +38,7 @@ public class Player implements Comparable<Player> {
      */
     public void addToBag(Card card) {
         info.bag.add(card);
+        Collections.sort(info.bag);
     }
 
     /**
@@ -78,8 +80,11 @@ public class Player implements Comparable<Player> {
      *         card.
      */
     public Collection<Card> loseMostOfBag() {
-        Card highest = info.bag.last();
-        bankCard(highest);
+        if (info.bag.size() > 0) {
+            Card highest = info.bag.get(info.bag.size() - 1);
+            bankCard(highest);
+            info.bag.remove(highest);
+        }
         return loseBag();
     }
 
@@ -97,7 +102,7 @@ public class Player implements Comparable<Player> {
      * @return true for left, false for right.
      */
     public boolean pickDeck(GameInfo gameInfo) {
-        return controller.pickDeck(gameInfo, info.playerNumber);
+        return controller.pickDeck(gameInfo, info);
     }
 
     /**
@@ -107,7 +112,7 @@ public class Player implements Comparable<Player> {
      * @return true to draw both.
      */
     public boolean drawBoth(GameInfo gameInfo) {
-        return controller.drawBoth(gameInfo, info.playerNumber);
+        return controller.drawBoth(gameInfo, info);
     }
 
     /**
@@ -116,7 +121,7 @@ public class Player implements Comparable<Player> {
      * @return true if the player wants to leave the dungeon.
      */
     public boolean leaveDungeon(GameInfo gameInfo) {
-        return controller.leaveDungeon(gameInfo, info.playerNumber);
+        return controller.leaveDungeon(gameInfo, info);
     }
 
     /**

@@ -56,6 +56,11 @@ public class GameInfo {
     protected int monstersThisJourney;
 
     /**
+     * Who the current player is.
+     */
+    protected int currentPlayer;
+
+    /**
      * Number of players in the game.
      */
     private int numPlayers;
@@ -156,5 +161,11 @@ public class GameInfo {
         return Arrays.copyOf(monsterRanks, monsterRanks.length);
     }
 
-
+    /**
+     * Returns whose turn it is.
+     * @return whose turn it is.
+     */
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
 }
