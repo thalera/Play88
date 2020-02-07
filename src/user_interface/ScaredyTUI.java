@@ -300,12 +300,20 @@ public class ScaredyTUI implements ScaredyUI {
      * @return a String displaying ranks.
      */
     private String getRanksString(int[] ranks) {
-        String res = "[";
+        StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < ranks.length - 1; i++) {
-            res += "R" + i + ": " + ranks[i] + ", ";
+            sb.append("R");
+            sb.append(i);
+            sb.append(": ");
+            sb.append(ranks[i]);
+            sb.append(", ");
         }
-        res += "R" + (ranks.length - 1) + ": " + ranks[ranks.length - 1] + "]";
-        return res;
+        sb.append("R");
+        sb.append(ranks.length - 1);
+        sb.append(": ");
+        sb.append(ranks[ranks.length - 1]);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**
@@ -329,7 +337,7 @@ public class ScaredyTUI implements ScaredyUI {
 
     /**
      * Prints out a message saying the player drew a card.
-     * @param card the monster card that was drawn.
+     * @param card the card that was drawn.
      * @param human if the player is a human.
      */
     @Override
