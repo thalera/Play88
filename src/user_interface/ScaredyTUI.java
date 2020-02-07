@@ -4,6 +4,7 @@ import cards.Card;
 import game.GameInfo;
 import players.PlayerInfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -205,10 +206,54 @@ public class ScaredyTUI implements ScaredyUI {
      * @param card the card to print.
      */
     private void printCard(Card card) {
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
         if (card.isMonster()) {
             printMonster(card);
         } else {
-            printTreasure(card);
+            printTreasureCards(cards);
+        }
+    }
+
+    /**
+     * Prints out a cute picture of the treasure cards.
+     * @param cards the cards to print.
+     */
+    private void printTreasureCards(List<Card> cards) {
+        int indentation = 5;
+        // tops
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print(" _____   ");
+        }
+        System.out.println();
+        // top mid
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print(getTopCardString(card) + "  ");
+        }
+        System.out.println();
+        // mid
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("|  " + card.getValue() + "  |  ");
+        }
+        System.out.println();
+        // bottom
+        printSpaces(indentation);
+        for (Card card : cards) {
+            System.out.print("|_____|  ");
+        }
+        System.out.println();
+    }
+
+    /**
+     * Prints out num spaces without moving to the next line.
+     * @param num the number of spaces to print.
+     */
+    private void printSpaces(int num) {
+        for (int i = 0; i < num; i++) {
+            System.out.print(" ");
         }
     }
 
@@ -233,17 +278,6 @@ public class ScaredyTUI implements ScaredyUI {
         System.out.println(" _____");
         System.out.println(getTopCardString(card));
         System.out.println("| >:( |");
-        System.out.println("|_____|");
-    }
-
-    /**
-     * Prints out a cute little picture of a treasure card.
-     * @param card the treasure card to print.
-     */
-    private void printTreasure(Card card) {
-        System.out.println(" _____");
-        System.out.println(getTopCardString(card));
-        System.out.println("|  " + card.getValue() + "  |");
         System.out.println("|_____|");
     }
 
@@ -288,10 +322,10 @@ public class ScaredyTUI implements ScaredyUI {
         for (Card card : playerInfo.getBag()) {
             bagScore += card.getValue();
         }
-        System.out.println("    Bag:   " + playerInfo.getBag().toString() +
-                " (" + bagScore + ")");
-        System.out.println("    Bank:  " + playerInfo.getBank().toString() +
-                " (" + playerInfo.getScore() + ")");
+        System.out.println("    Bag (" + bagScore + "):");
+        printTreasureCards(playerInfo.getBag());
+        System.out.println("    Bank (" + playerInfo.getScore() + "):");
+        printTreasureCards(playerInfo.getBank());
         System.out.println("    Score: " + (playerInfo.getScore() + bagScore));
         System.out.println();
     }
