@@ -1,11 +1,11 @@
 package user_interface;
 
 import cards.Card;
+import cards.Deck;
 import game.GameInfo;
 import players.PlayerInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -113,14 +113,17 @@ public class ScaredyTUI implements ScaredyUI {
                 "Monsters Encountered: " + gameInfo.getMonstersThisJourney());
         System.out.println("Monsters Encountered Overall: ");
         int[] monsterRanks = gameInfo.getMonsterRanks();
+        int[] ranksLeft = Deck.getTotalRanks();
         List<Card> monsters = new ArrayList<>();
         for (int i = 0; i < monsterRanks.length; i++) {
             for (int j = 0; j < monsterRanks[i]; j++) {
                 monsters.add(new Card(i));
             }
+            ranksLeft[i] -= monsterRanks[i];
         }
         printMonsterCards(monsters);
         System.out.println();
+        // player info
         for (int i = 0; i < gameInfo.getNumPlayers(); i++) {
             int[] bagRanks = gameInfo.getBagRanks(i);
             int[] bankRanks = gameInfo.getBankRanks(i);
@@ -134,9 +137,14 @@ public class ScaredyTUI implements ScaredyUI {
                 getRanksString(bagRanks) + ", " +
                 "Bank: " + getRanksString(bankRanks) +
                     ", Score: (" + min + " to " + max + ")");
+            for (int j = 0; j < ranksLeft.length; j++) {
+                ranksLeft[j] -= totalRanks[j];
+            }
         }
         System.out.println();
-        System.out.println("Cards remaining: " + gameInfo.getCardsLeft());
+        // deck info
+        System.out.println("Cards remaining: " + gameInfo.getCardsLeft() +
+                ", " + getRanksString(ranksLeft));
         List<Card> deckCards = new ArrayList<>();
         deckCards.add(new Card(gameInfo.getLeftRank()));
         deckCards.add(new Card(gameInfo.getRightRank()));

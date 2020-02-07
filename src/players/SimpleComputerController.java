@@ -22,13 +22,15 @@ public class SimpleComputerController implements PlayerController {
     }
 
     /**
-     * Always draws both.
+     * Always draws both. Prints a message saying so.
      * @param info information about the current state of the game.
      * @param playerInfo the information about the current player.
      * @return true.
      */
     @Override
     public boolean drawBoth(GameInfo info, PlayerInfo playerInfo) {
+        System.out.println("Computer chose to draw both!");
+        System.out.println();
         return true;
     }
 
@@ -54,13 +56,16 @@ public class SimpleComputerController implements PlayerController {
     public boolean pickDeck(GameInfo info, PlayerInfo playerInfo) {
         int leftRank = info.getLeftRank();
         int rightRank = info.getRightRank();
-        if (leftRank > rightRank) {
-            return true;
-        } else if (rightRank > leftRank) {
-            return false;
+        boolean left = leftRank == rightRank ? rand.nextInt(2) == 1 :
+                                               leftRank > rightRank;
+        if (left) {
+            System.out.println("Computer chose to draw from left!");
+            System.out.println();
         } else {
-            return rand.nextInt(2) == 1;
+            System.out.println("Computer chose to draw from right!");
+            System.out.println();
         }
+        return left;
     }
 
 

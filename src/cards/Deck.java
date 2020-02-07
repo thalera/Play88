@@ -163,4 +163,13 @@ public class Deck {
         return this.size() == 0;
     }
 
+    /**
+     * Returns an array containing the total number of each rank in a new deck,
+     * where [i] is the number of cards of rank[i].
+     * @return an array containing the total number of each rank.
+     */
+    public static int[] getTotalRanks() {
+        return new int[] {11, 12, 13};
+    }
+
 }
