@@ -151,14 +151,53 @@ public class ScaredyTUI implements ScaredyUI {
      * @param rightRank the rank of the right card.
      */
     private void printDecks(int leftRank, int rightRank) {
+        // I realize this is a mess but idk how to fix it
         char leftTop = leftRank > 0 ? '*' : ' ';
         char leftMid = leftRank > 1 ? '*' : ' ';
         char rightTop = rightRank > 0 ? '*' : ' ';
         char rightMid = rightRank > 1 ? '*' : ' ';
-        System.out.println(" _____     _____");
-        System.out.println("|  " + leftTop + "  |   |  " + rightTop + "  |");
-        System.out.println("|  " + leftMid + "  |   |  " + rightMid + "  |");
-        System.out.println("|_____|   |_____|");
+        boolean leftAvailable = leftRank >= 0;
+        boolean rightAvailable = rightRank >= 0;
+        if (leftAvailable) {
+            System.out.print(" _____    ");
+        } else {
+            System.out.print("          ");
+        }
+        if (rightAvailable) {
+            System.out.println(" _____");
+        } else {
+            System.out.println();
+        }
+        if (leftAvailable) {
+            System.out.print("|  " + leftTop + "  |   ");
+        } else {
+            System.out.print("          ");
+        }
+        if (rightAvailable) {
+            System.out.println("|  " + rightTop + "  |   ");
+        } else {
+            System.out.println();
+        }
+        if (leftAvailable) {
+            System.out.print("|  " + leftMid + "  |   ");
+        } else {
+            System.out.print("          ");
+        }
+        if (rightAvailable) {
+            System.out.println("|  " + rightMid + "  |   ");
+        } else {
+            System.out.println();
+        }
+        if (leftAvailable) {
+            System.out.print("|_____|   ");
+        } else {
+            System.out.print("          ");
+        }
+        if (rightAvailable) {
+            System.out.println("|_____|");
+        } else {
+            System.out.println();
+        }
     }
 
     /**

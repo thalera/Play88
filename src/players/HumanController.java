@@ -32,12 +32,24 @@ public class HumanController implements PlayerController {
     @Override
     public boolean pickDeck(GameInfo info, PlayerInfo playerInfo) {
         String response = "";
-        while (!response.startsWith("L") && !response.startsWith("R")) {
-            System.out.print("Draw from (L)eft or (R)ight deck? ");
-            response = console.nextLine().toUpperCase();
+        if (info.getLeftRank() >= 0 && info.getRightRank() >= 0) {
+            while (!response.startsWith("L") && !response.startsWith("R")) {
+                System.out.print("Draw from (L)eft or (R)ight deck? ");
+                response = console.nextLine().toUpperCase();
+            }
+            System.out.println();
+            return response.startsWith("L");
+        } else if (info.getLeftRank() >= 0) {
+            System.out.println("You must draw from (L)eft. ");
+            System.out.print("(Hit enter to continue)");
+            console.nextLine();
+            return true;
+        } else {
+            System.out.println("You must draw from (R)ight. ");
+            System.out.print("(Hit enter to continue)");
+            console.nextLine();
+            return false;
         }
-        System.out.println();
-        return response.startsWith("L");
     }
 
     /**
