@@ -106,21 +106,16 @@ public class LocalGameManager implements GameManager {
      */
     private void setUpGameInfo() {
         int numHumans = userInterface.getNumHumans();
-        int numEasyComputers = userInterface.getNumEasyComputers();
-        int numHardComputers = userInterface.getNumHardComputers();
+        int numComputers = userInterface.getNumComputers();
         PlayerController humanController = new ConsoleController(input);
         PlayerController simpleController = new SimpleComputerController();
-        PlayerController smartController = new SmarterComputerController();
         for (int i = 0; i < numHumans; i++) {
             addPlayer(humanController, i, true);
         }
-        for (int i = 0; i < numEasyComputers; i++) {
+        for (int i = 0; i < numComputers; i++) {
             addPlayer(simpleController, i + numHumans, false);
         }
-        for (int i = 0; i < numHardComputers; i++) {
-            addPlayer(smartController, i + numEasyComputers + numHumans, false);
-        }
-        this.gameInfo = new GameInfo(numEasyComputers + numHumans + numHardComputers);
+        this.gameInfo = new GameInfo(numComputers + numHumans);
     }
 
     /**
