@@ -93,12 +93,21 @@ public class ScaredyTUI implements ScaredyUI {
     }
 
     /**
-     * Returns the number of computer players in the game.
-     * @return the number of computer players in the game.
+     * Returns the number of easy computer players in the game.
+     * @return the number of easy computer players in the game.
      */
     @Override
-    public int getNumComputers() {
-        return getNumPlayers("computer");
+    public int getNumEasyComputers() {
+        return getNumPlayers("easy computer");
+    }
+
+    /**
+     * Returns the number of hard computer players in the game.
+     * @return the number of hard computer players in the game.
+     */
+    @Override
+    public int getNumHardComputers() {
+        return getNumPlayers("hard computer");
     }
 
     /**

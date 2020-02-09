@@ -106,20 +106,33 @@ public class LocalGameManager implements GameManager {
      */
     private void setUpGameInfo() {
         int numHumans = userInterface.getNumHumans();
-        int numComputers = userInterface.getNumComputers();
+        int numEasyComputers = userInterface.getNumEasyComputers();
+        int numHardComputers = userInterface.getNumHardComputers();
         PlayerController humanController = new ConsoleController(input);
         PlayerController simpleController = new SimpleComputerController();
+        PlayerController smartController = new SmarterComputerController();
         for (int i = 0; i < numHumans; i++) {
-            Player player = new Player(humanController, i, true);
-            numbersToPlayers.put(i, player);
-            playersInDungeon.add(player);
+            addPlayer(humanController, i, true);
         }
-        for (int i = 0; i < numComputers; i++) {
-            Player player = new Player(simpleController, i + numHumans, false);
-            numbersToPlayers.put(i + numHumans, player);
-            playersInDungeon.add(player);
+        for (int i = 0; i < numEasyComputers; i++) {
+            addPlayer(simpleController, i + numHumans, false);
         }
-        this.gameInfo = new GameInfo(numComputers + numHumans);
+        for (int i = 0; i < numHardComputers; i++) {
+            addPlayer(smartController, i + numEasyComputers + numHumans, false);
+        }
+        this.gameInfo = new GameInfo(numEasyComputers + numHumans + numHardComputers);
+    }
+
+    /**
+     * Adds a new player to the game with the controller and number.
+     * @param controller the controller for the player.
+     * @param number the player's number.
+     * @param human if this player is a human.
+     */
+    private void addPlayer(PlayerController controller, int number, boolean human) {
+        Player player = new Player(controller, number, human);
+        numbersToPlayers.put(number, player);
+        playersInDungeon.add(player);
     }
 
     /**

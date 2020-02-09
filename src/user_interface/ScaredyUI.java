@@ -43,10 +43,16 @@ public interface ScaredyUI {
     int getNumHumans();
 
     /**
-     * Returns the number of AI players for the game.
-     * @return the number of AI players for the game.
+     * Returns the number of easy AI players for the game.
+     * @return the number of easy AI players for the game.
      */
-    int getNumComputers();
+    int getNumEasyComputers();
+
+    /**
+     * Returns the number of hard AI players for the game.
+     * @return the number of hard AI players for the game.
+     */
+    int getNumHardComputers();
 
     /**
      * Is called at the start of every turn
